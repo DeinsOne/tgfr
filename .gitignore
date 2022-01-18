@@ -1,0 +1,12 @@
+## directories
+/build
+/,vs
+/.vscode
+/tmp
+/CMakeFiles
+
+## Files
+/CMakeCache.txt
+/Makefile
+/*.cmake
+/*.ninja
