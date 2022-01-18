@@ -20,8 +20,14 @@ int main(int argc, char** argv) {
     eventhandler->addEvent<Events::EventAnyMessage>();
     eventhandler->addEvent<Events::EventStart>();
 
+    // Or
+    // auto eventhandler = EventHandler::make_handler(eventmanager)
+    //     ->addEvent<Events::EventAnyMessage>()
+    //     ->addEvent<Events::EventStart>();
+
+
     // Create bot
-    auto bot = Bot::Bot::make_bot(eventmanager, eventhandler, "!!! TOKEN !!!");
+    auto bot = Bot::make_bot(eventmanager, eventhandler, "!!! TOKEN !!!");
 
     // Start bot with BotSync executor. Means bot will be executed in the same thread as the program
     bot->start<BotSync>();

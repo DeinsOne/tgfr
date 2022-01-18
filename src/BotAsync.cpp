@@ -13,19 +13,24 @@ namespace tgfr {
 
     void BotAsync::_start(const std::shared_ptr<TgBot::Bot>& bot) {
         m_worker = std::thread([&](const std::shared_ptr<TgBot::Bot>& _bot) {
-            INFO("BotAsync -> start bot in asynchronous threading");
-            INFO("BotAsync -> usr[{}] {}", bot->getApi().getMe()->id, bot->getApi().getMe()->username);
-            m_alive = true;
-
             try {
-                TgBot::TgLongPoll pool(*_bot, 1, 1);
-                while (m_alive) {
-                    std::lock_guard<std::mutex> _lock(m_lock);
-                    pool.start();
+                INFO("BotAsync -> start bot in asynchronous threading");
+                INFO("BotAsync -> usr[{}] {}", bot->getApi().getMe()->id, bot->getApi().getMe()->username);
+                m_alive = true;
+
+                try {
+                    TgBot::TgLongPoll pool(*_bot, 1, 1);
+                    while (m_alive) {
+                        std::lock_guard<std::mutex> _lock(m_lock);
+                        pool.start();
+                    }
+                }
+                catch (const TgBot::TgException& e) {
+                    ERROR("BotAsync -> {}", e.what());
                 }
             }
             catch (const TgBot::TgException& e) {
-                ERROR("BotAsync -> {}", e.what());
+                CRITICAL("BotAsync -> {}", e.what());
             }
 
         }, bot);

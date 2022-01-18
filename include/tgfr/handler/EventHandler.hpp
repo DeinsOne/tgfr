@@ -16,18 +16,22 @@ namespace tgfr {
         }
 
         static std::shared_ptr<EventHandler> make_handler(const std::shared_ptr<EventManager>& eventmanager) {
-            return std::make_shared<EventHandler>(eventmanager);
+            auto handler = std::make_shared<EventHandler>(eventmanager);
+            handler->_impl = handler;
+            return handler;
         }
 
     public:
         template<typename TEvent>
-        void addEvent() {
+        std::shared_ptr<EventHandler> addEvent() {
             auto event = new TEvent;
 
             if (auto ptr = dynamic_cast<EventMessage*>(event))
                 m_events_message.emplace_back(ptr);
             if (auto ptr = dynamic_cast<EventQuery*>(event))
                 m_events_query.emplace_back(ptr);
+
+            return _impl;
         }
 
     public:
@@ -40,6 +44,9 @@ namespace tgfr {
 
         std::vector<std::shared_ptr<EventMessage>> m_events_message;
         std::vector<std::shared_ptr<EventQuery>> m_events_query;
+
+    private:
+        std::shared_ptr<EventHandler> _impl;
 
     };
 

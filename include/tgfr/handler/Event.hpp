@@ -9,13 +9,6 @@
 
 namespace tgfr {
 
-    // enum class EventType {
-    //     EventType_None = 0,
-    //     EventType_Message,
-    //     EventType_Query
-    // };
-
-
     template<typename TEventObject>
     class IEvent : public IEventExecutable {
     public:
@@ -23,7 +16,6 @@ namespace tgfr {
         IEvent(const std::shared_ptr<TEventObject>& eventobject);
 
         virtual std::shared_ptr<TEventObject> GetEventObject() = 0;
-        // virtual EventType GetEventType() = 0;
 
         virtual std::shared_ptr<IEvent<TEventObject>> make_copy(const std::shared_ptr<TEventObject>& eventobject) = 0;
 
@@ -40,7 +32,6 @@ namespace tgfr {
         }
 
         virtual std::shared_ptr<IEventObject<Message>> GetEventObject() override { return m_eventobject; }
-        // virtual EventType GetEventType() override { return EventType::EventType_Message; };
 
         virtual TgBot::User::Ptr GetOwner() override {
             return m_eventobject->GetOwner();
@@ -62,7 +53,6 @@ namespace tgfr {
         }
 
         virtual std::shared_ptr<IEventObject<Query>> GetEventObject() override { return m_eventobject; }
-        // virtual EventType GetEventType() override { return EventType::EventType_Message; };
 
         virtual TgBot::User::Ptr GetOwner() override {
             return m_eventobject->GetOwner();
