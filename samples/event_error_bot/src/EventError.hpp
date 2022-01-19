@@ -9,16 +9,11 @@
 namespace Events {
 
     class CustomEventError : public tgfr::EventError {
-    public:
-        CustomEventError() = default;
-        CustomEventError(const std::shared_ptr<tgfr::IEventObject<std::string>>& exception, const std::shared_ptr<tgfr::IEventExecutable>& badevent) : tgfr::EventError(exception, badevent) {}
+        EVENT_ERROR_CLASS(CustomEventError)
 
+    public:
         virtual void Handle(const std::shared_ptr<TgBot::Bot>& bot) override {
             ERROR("EventWorker custom -> usr[{}] {}", m_badevent->GetOwner()->id, m_eventobject->GetData());
-        }
-
-        virtual std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<tgfr::IEventExecutable> badevent) override {
-            return std::make_shared<CustomEventError>(exception, badevent);
         }
 
     };
