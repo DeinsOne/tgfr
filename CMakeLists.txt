@@ -27,6 +27,7 @@ set(TGFR_SRC_LIST
     src/BotSync.cpp
     src/logger/Logger.cpp
     src/handler/EventHandler.cpp
+    src/manager/EventWorker.cpp
 )
 
 # libs

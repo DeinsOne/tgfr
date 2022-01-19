@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
     eventhandler->addEvent<Events::EventAnyMessage>();
     eventhandler->addEvent<Events::EventStart>();
 
+    eventhandler->addEvent<tgfr::EventError>();
+
     // Or
     // auto eventhandler = EventHandler::make_handler(eventmanager)
     //     ->addEvent<Events::EventAnyMessage>()
@@ -27,7 +29,7 @@ int main(int argc, char** argv) {
 
 
     // Create bot
-    auto bot = Bot::make_bot(eventmanager, eventhandler, "!!! TOKEN !!!");
+    auto bot = Bot::make_bot(eventmanager, eventhandler, "5022108389:AAEQVU1BvRL1JoeRQRaZgd9FM0NxS7_V6lU");
 
     // Start bot with BotSync executor. Means bot will be executed in the same thread as the program
     bot->start<BotSync>();

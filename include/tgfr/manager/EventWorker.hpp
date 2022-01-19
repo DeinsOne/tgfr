@@ -10,6 +10,8 @@
 
 namespace tgfr {
 
+    class EventError;
+
     // This callback will be executing every time EventWorker get exception. Indicates whether given event has runtime hanling error 
     // static inline void __onBadWorker(const std::exception& e, const std::shared_ptr<IEventExecutable>& m_event, const std::shared_ptr<TgBot::Bot>& bot) {
     //     try {
@@ -30,7 +32,7 @@ namespace tgfr {
     */
     class EventWorker {
     public:
-        EventWorker(const std::shared_ptr<IEventExecutable>& event, const std::shared_ptr<TgBot::Bot>& bot, std::function<void()> callback);
+        EventWorker(const std::shared_ptr<IEventExecutable>& event, const std::shared_ptr<TgBot::Bot>& bot, const std::shared_ptr<EventError> eventerror, std::function<void()> callback);
 
         template<typename _Clock, typename _Dur>
         bool IsDone(const std::chrono::duration<_Clock, _Dur>& max_lifetime) {
@@ -43,28 +45,6 @@ namespace tgfr {
         bool m_ready;
         std::shared_ptr<IEventExecutable> m_event;
     };
-
-
-    inline EventWorker::EventWorker(const std::shared_ptr<IEventExecutable>& event, const std::shared_ptr<TgBot::Bot>& bot, std::function<void()> callback) : m_event(event) {
-        m_ready = false;
-        m_thread = std::thread([&](const std::shared_ptr<TgBot::Bot>& _bot, std::function<void()> _callback) {
-            m_initiated = std::chrono::high_resolution_clock::now();
-            try {
-                m_event->Handle(_bot);
-            }
-            catch (const std::exception& e) {
-                ERROR("EventWorker -> usr[{}] {}", m_event->GetOwner()->id, e.what());
-
-                // #ifdef NOTIFY_USER_ON_ERROR
-                //   __onBadWorker(e, m_event, _bot);
-                // #endif // NOTIFY_USER_ON_ERROR
-            }
-
-            m_ready = true;
-            _callback();
-        }, bot, callback);
-        m_thread.detach();
-    }
 
 } // namespace Bot
 

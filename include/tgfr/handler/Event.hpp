@@ -67,6 +67,38 @@ namespace tgfr {
     };
 
 
+    class EventError : public IEvent<IEventObject<std::string>> {
+    public:
+
+        EventError() = default;
+        EventError(const std::shared_ptr<IEventObject<std::string>>& exception) : m_eventobject(exception) {}
+        EventError(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<IEventExecutable>& badevent) : m_eventobject(exception), m_badevent(badevent) {}
+
+
+        virtual std::shared_ptr<IEventObject<std::string>> GetEventObject() override { return m_eventobject; }
+        virtual TgBot::User::Ptr GetOwner() override { return m_badevent->GetOwner(); }
+        virtual TgBot::Chat::Ptr GetChat() override { return m_badevent->GetChat(); }
+
+        virtual std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception) override {
+            return std::make_shared<EventError>(exception);
+        }
+
+        std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<IEventExecutable> badevent) {
+            return std::make_shared<EventError>(exception, badevent);
+        }
+
+        virtual void Handle(const std::shared_ptr<TgBot::Bot>& bot) override {
+            // Default handler
+            ERROR("EventWorker -> usr[{}] {}", m_badevent->GetOwner()->id, m_eventobject->GetData());
+        }
+
+        virtual bool Check(const std::shared_ptr<IEventObject<std::string>>& eventobject) override { return false; }
+
+    private:
+        std::shared_ptr<IEventObject<std::string>> m_eventobject;
+        std::shared_ptr<IEventExecutable> m_badevent;
+    };
+
 } // namespace Bot
 
 
