@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
         ->addEvent<Events::EventAnyMessage>()
         ->addEvent<Events::EventStart>();
 
-    auto bot = Bot::make_bot(eventmanager, eventhandler, "5022108389:AAEQVU1BvRL1JoeRQRaZgd9FM0NxS7_V6lU");
+    auto bot = Bot::make_bot(eventmanager, eventhandler, "!!! Token !!!");
 
     bot->start<BotSync>();
 
