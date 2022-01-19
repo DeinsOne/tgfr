@@ -83,7 +83,7 @@ namespace tgfr {
             return std::make_shared<EventError>(exception);
         }
 
-        std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<IEventExecutable> badevent) {
+        virtual std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<IEventExecutable> badevent) {
             return std::make_shared<EventError>(exception, badevent);
         }
 
@@ -94,7 +94,7 @@ namespace tgfr {
 
         virtual bool Check(const std::shared_ptr<IEventObject<std::string>>& eventobject) override { return false; }
 
-    private:
+    protected:
         std::shared_ptr<IEventObject<std::string>> m_eventobject;
         std::shared_ptr<IEventExecutable> m_badevent;
     };
