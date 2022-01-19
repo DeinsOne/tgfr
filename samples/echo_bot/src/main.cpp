@@ -1,6 +1,5 @@
 
-#include <tgfr/Logger.h>
-#include <tgfr/Bot.hpp>
+#include <tgfr/tgfr.hpp>
 
 #include "EventStart.hpp"
 #include "EventAnyMessage.hpp"
@@ -8,7 +7,7 @@
 using namespace tgfr;
 
 int main(int argc, char** argv) {
-    Logger::Init();
+    tgfr::Init();
 
     // Create event manager executing maximum 10 asynchronous events with max 1 minute lifetime
     auto eventmanager = EventManager::make_manager(10, std::chrono::minutes(1));

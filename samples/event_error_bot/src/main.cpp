@@ -1,6 +1,5 @@
 
-#include <tgfr/Logger.h>
-#include <tgfr/Bot.hpp>
+#include <tgfr/tgfr.hpp>
 
 #include "EventStart.hpp"
 #include "EventAnyMessage.hpp"
@@ -9,7 +8,7 @@
 using namespace tgfr;
 
 int main(int argc, char** argv) {
-    Logger::Init();
+    tgfr::Init();
 
     auto eventmanager = EventManager::make_manager(10, std::chrono::minutes(1));
     auto eventhandler = EventHandler::make_handler(eventmanager)
