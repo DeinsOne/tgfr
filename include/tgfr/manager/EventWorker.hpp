@@ -12,21 +12,6 @@ namespace tgfr {
 
     class EventError;
 
-    // This callback will be executing every time EventWorker get exception. Indicates whether given event has runtime hanling error 
-    // static inline void __onBadWorker(const std::exception& e, const std::shared_ptr<IEventExecutable>& m_event, const std::shared_ptr<TgBot::Bot>& bot) {
-    //     try {
-    //         // Send sticker via file_id
-    //         auto sticker = bot->getApi().sendSticker(m_event->GetOwner()->id, "CAACAgIAAxkDAAIBIGHcAR55RsRQrmosELf4sxJkBfAUAAJeFQACf3rhSqPlqFeHamgtIwQ");
-    //         bot->getApi().sendMessage(m_event->GetOwner()->id, "Some error ocurred. Please contact developer @deinsone 🥺");
-    //         // To get file_id
-    //         // auto sticker = bot->getApi().sendSticker(m_event->GetOwner()->id, TgBot::InputFile::fromFile("../resources/InternallError.tgs", "image/webp") );
-    //         // printf("  sticker file_id: %s\n", sticker->sticker->fileId.c_str());
-    //     }
-    //     catch (const std::exception& ie) {
-    //         ERROR("EventWorker -> sending sorry message usr[{}] {}", m_event->GetOwner()->id, e.what());  
-    //     }
-    // }
-
     /**
      * Class doing event handling
     */

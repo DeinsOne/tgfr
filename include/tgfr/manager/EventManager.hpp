@@ -14,9 +14,7 @@ namespace tgfr {
     */
     class EventManager {
     public:
-        EventManager(const std::size_t& max_async_events, const std::chrono::seconds& max_timeout)
-         : m_max_async_events(max_async_events), m_max_timeout(max_timeout) {
-        }
+        EventManager(const std::size_t& max_async_events, const std::chrono::seconds& max_timeout);
 
         static std::shared_ptr<EventManager> make_manager(const std::size_t& max_async_events, const std::chrono::seconds& max_timeout) {
             return std::make_shared<EventManager>(max_async_events, max_timeout);

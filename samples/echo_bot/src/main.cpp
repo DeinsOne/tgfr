@@ -20,8 +20,6 @@ int main(int argc, char** argv) {
     eventhandler->addEvent<Events::EventAnyMessage>();
     eventhandler->addEvent<Events::EventStart>();
 
-    eventhandler->addEvent<tgfr::EventError>();
-
     // Or
     // auto eventhandler = EventHandler::make_handler(eventmanager)
     //     ->addEvent<Events::EventAnyMessage>()
