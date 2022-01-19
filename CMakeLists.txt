@@ -27,6 +27,7 @@ set(TGFR_SRC_LIST
     src/BotSync.cpp
     src/logger/Logger.cpp
     src/handler/EventHandler.cpp
+    src/manager/EventWorker.cpp
 )
 
 # libs
@@ -82,4 +83,5 @@ if (BUILD_SAMPLES)
     message(STATUS "Building sample projects is enabled")
     set(TGFR_LIB ${PROJECT_NAME})
     add_subdirectory(samples/echo_bot)
+    add_subdirectory(samples/event_error_bot)
 endif()

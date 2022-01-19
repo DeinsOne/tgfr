@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 
 
     // Create bot
-    auto bot = Bot::make_bot(eventmanager, eventhandler, "!!! TOKEN !!!");
+    auto bot = Bot::make_bot(eventmanager, eventhandler, "!!! Token !!!");
 
     // Start bot with BotSync executor. Means bot will be executed in the same thread as the program
     bot->start<BotSync>();

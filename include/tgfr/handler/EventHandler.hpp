@@ -27,9 +27,11 @@ namespace tgfr {
             auto event = new TEvent;
 
             if (auto ptr = dynamic_cast<EventMessage*>(event))
-                m_events_message.emplace_back(ptr);
+                m_events_message.emplace_back(std::shared_ptr<EventMessage>(ptr));
             if (auto ptr = dynamic_cast<EventQuery*>(event))
-                m_events_query.emplace_back(ptr);
+                m_events_query.emplace_back(std::shared_ptr<EventQuery>(ptr));
+            if (auto ptr = dynamic_cast<EventError*>(event))
+                m_eventmanager->_bindEventError(std::shared_ptr<EventError>(ptr));
 
             return _impl;
         }

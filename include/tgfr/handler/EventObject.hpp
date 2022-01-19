@@ -4,7 +4,7 @@
 #include <tgbot/types/Message.h>
 #include <tgbot/types/CallbackQuery.h>
 
-#include <tgfr/handler/EventHandler.hpp>
+// #include <tgfr/handler/EventHandler.hpp>
 #include <tgfr/Logger.h>
 
 #include <tgbot/types/User.h>
@@ -12,25 +12,28 @@
 
 namespace tgfr {
 
-    /**
-     * Wrapper for TgBot::MessagePtr & TgBot::InlineQuery::Ptr
-     * T is wrapper type: std::shared_ptr<some type>
-    */
-    template<typename TShared>
-    class IEventObject {
+    class IEventObjcetBase {
     public:
-        virtual TShared GetImpl() = 0;
-
         /** 
          * @return String representation of object's text. Message returns text etc.
         */
         virtual std::string GetData() = 0;
 
-        virtual std::string GetAttachmentType() = 0;
-
         virtual TgBot::User::Ptr GetOwner() = 0;
 
         virtual TgBot::Chat::Ptr GetChat() = 0;
+
+        virtual std::string GetAttachmentType() = 0;
+    };
+
+    /**
+     * Wrapper for TgBot::MessagePtr & TgBot::InlineQuery::Ptr
+     * T is wrapper type: std::shared_ptr<some type>
+    */
+    template<typename TShared>
+    class IEventObject : public IEventObjcetBase {
+    public:
+        virtual TShared GetImpl() = 0;
 
     };
 
@@ -120,6 +123,27 @@ namespace tgfr {
 
     private:
         Query m_query;
+    };
+
+
+    class EventObjectError : public IEventObject<std::string> {
+    public:
+        EventObjectError(const std::string& message) : m_msg(message) {
+        }
+
+        static std::shared_ptr<IEventObject<std::string>> make_object(const std::string& o) {
+            return std::make_shared<EventObjectError>(o);
+        }
+
+        virtual std::string GetImpl() override { return m_msg; }
+        virtual std::string GetData() override { return m_msg; }
+
+        virtual std::string GetAttachmentType() override { return ""; }
+        virtual TgBot::User::Ptr GetOwner() override { return nullptr; }
+        virtual TgBot::Chat::Ptr GetChat() override { return nullptr; }
+
+    private:
+        std::string m_msg;
     };
 
 } // namespace Bot
