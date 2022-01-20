@@ -9,6 +9,9 @@
 #include <json/json.h>
 #include <fstream>
 
+#include <tgbot/types/InlineKeyboardMarkup.h>
+#include <tgbot/types/InlineKeyboardButton.h>
+
 namespace utils {
 
     inline std::string toLower(const std::string& convert) {
@@ -87,3 +90,63 @@ namespace utils {
     }
 
 } // namespace utils
+
+namespace tgfr {
+
+    /**
+     * Creates InlineKeyboardMarkup object and returns it to user.
+     * 
+     * @param layout Represents keyboard raws and columns. std::pair<std::string,std::string> must contain text and callback_data.
+    */
+    inline TgBot::InlineKeyboardMarkup::Ptr createInlineKeyboard(const std::vector<std::vector<std::pair<std::string,std::string>>>& layout) {
+        TgBot::InlineKeyboardMarkup::Ptr kb = std::shared_ptr<TgBot::InlineKeyboardMarkup>(new TgBot::InlineKeyboardMarkup);
+
+        for (auto i : layout) {
+            std::vector<TgBot::InlineKeyboardButton::Ptr> row;
+            for (auto j : i) {
+                TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+                button->text = j.first;
+                button->callbackData = j.second;
+                row.emplace_back(button);
+            }
+            kb->inlineKeyboard.emplace_back(row);
+        }
+
+        return kb;
+    }
+
+
+    inline std::string formatBold(const std::string& str, const std::string parse_mode = "html") {
+        auto mode = utils::toLower(parse_mode);
+        if (mode == "html") return "<b>" + str + "</b>";
+        else if (mode, "markdown") return "**" + str + "**";
+        return str;
+    }
+
+    inline std::string formatItalic(const std::string& str, const std::string parse_mode = "html") {
+        auto mode = utils::toLower(parse_mode);
+        if (mode == "html") return "<i>" + str + "</i>";
+        else if (mode, "markdown") return "*" + str + "*";
+        return str;
+    }
+
+    inline std::string formatStroke(const std::string& str, const std::string parse_mode = "html") {
+        auto mode = utils::toLower(parse_mode);
+        if (mode == "html") return "<s>" + str + "</s>";
+        else if (mode, "markdown") return "~~" + str + "~~";
+        return str;
+    }
+
+    inline std::string formatUnderline(const std::string& str) {
+        return "<u>" + str + "</u>";
+    }
+
+    inline std::string formatCode(const std::string& str, const std::string parse_mode = "html") {
+        auto mode = utils::toLower(parse_mode);
+        if (mode == "html") return "<code>" + str + "</code>";
+        else if (mode, "markdown") return "`" + str + "`";
+        return str;
+    }
+
+
+} // namespace tgfr
