@@ -119,21 +119,21 @@ namespace tgfr {
     inline std::string formatBold(const std::string& str, const std::string parse_mode = "html") {
         auto mode = utils::toLower(parse_mode);
         if (mode == "html") return "<b>" + str + "</b>";
-        else if (mode, "markdown") return "**" + str + "**";
+        else if (mode == "markdown") return "**" + str + "**";
         return str;
     }
 
     inline std::string formatItalic(const std::string& str, const std::string parse_mode = "html") {
         auto mode = utils::toLower(parse_mode);
         if (mode == "html") return "<i>" + str + "</i>";
-        else if (mode, "markdown") return "*" + str + "*";
+        else if (mode == "markdown") return "*" + str + "*";
         return str;
     }
 
     inline std::string formatStroke(const std::string& str, const std::string parse_mode = "html") {
         auto mode = utils::toLower(parse_mode);
         if (mode == "html") return "<s>" + str + "</s>";
-        else if (mode, "markdown") return "~~" + str + "~~";
+        else if (mode == "markdown") return "~~" + str + "~~";
         return str;
     }
 
@@ -144,7 +144,7 @@ namespace tgfr {
     inline std::string formatCode(const std::string& str, const std::string parse_mode = "html") {
         auto mode = utils::toLower(parse_mode);
         if (mode == "html") return "<code>" + str + "</code>";
-        else if (mode, "markdown") return "`" + str + "`";
+        else if (mode == "markdown") return "`" + str + "`";
         return str;
     }
 
