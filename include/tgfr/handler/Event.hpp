@@ -102,22 +102,22 @@ namespace tgfr {
 } // namespace Bot
 
 
-#define EVENT_CLASS_0(CLASS, OBJECT) \
+#define EVENT_CLASS_0(CLASS, BASE, OBJECT) \
 public: \
     CLASS() = default; \
-    CLASS(const std::shared_ptr<IEventObject<Message>>& eventobject) : EventMessage(eventobject) {} \
+    CLASS(const std::shared_ptr<OBJECT>& eventobject) : BASE(eventobject) {} \
     virtual std::shared_ptr<IEvent<OBJECT>> make_copy(const std::shared_ptr<OBJECT>& eventobject) override { \
         return std::make_shared<CLASS>(eventobject); \
     }
 
-#define EVENT_MESSAGE_CLASS(CLASS) EVENT_CLASS_0(CLASS, IEventObject<Message>)
-#define EVENT_QUERY_CLASS(CLASS) EVENT_CLASS_0(CLASS, IEventObject<Query>)
+#define EVENT_MESSAGE_CLASS(CLASS) EVENT_CLASS_0(CLASS, EventMessage, IEventObject<Message>)
+#define EVENT_QUERY_CLASS(CLASS) EVENT_CLASS_0(CLASS, EventQuery, IEventObject<Query>)
 
 #define EVENT_ERROR_CLASS(CLASS) \
 public: \
     CLASS() = default; \
-    CLASS(const std::shared_ptr<tgfr::IEventObject<std::string>>& exception, const std::shared_ptr<tgfr::IEventExecutable>& badevent) : tgfr::EventError(exception, badevent) {} \
-    virtual std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<tgfr::IEventExecutable> badevent) override { \
+    CLASS(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<IEventExecutable>& badevent) : EventError(exception, badevent) {} \
+    virtual std::shared_ptr<IEvent<IEventObject<std::string>>> make_copy(const std::shared_ptr<IEventObject<std::string>>& exception, const std::shared_ptr<IEventExecutable> badevent) override { \
         return std::make_shared<CLASS>(exception, badevent); \
     }
 

@@ -60,10 +60,7 @@ namespace tgfr {
             return impl;
         }
 
-        virtual Message GetImpl() override {
-            return m_message;
-        }
-
+        virtual Message GetImpl() override { return m_message; }
         virtual std::string GetData() override {
             if (
                 m_message->audio || m_message->video || 
@@ -74,17 +71,9 @@ namespace tgfr {
             return m_message->text;
         }
 
-        virtual std::string GetAttachmentType() override {
-            return m_attachmenttype;
-        }
-
-        virtual TgBot::User::Ptr GetOwner() override {
-            return m_message->from;
-        }
-
-        virtual TgBot::Chat::Ptr GetChat() override {
-            return m_message->chat;
-        }
+        virtual std::string GetAttachmentType() override { return m_attachmenttype; }
+        virtual TgBot::User::Ptr GetOwner() override { return m_message->from; }
+        virtual TgBot::Chat::Ptr GetChat() override { return m_message->chat; }
 
 
     private:
@@ -95,31 +84,19 @@ namespace tgfr {
     // Query event object
     class EventObjectQuery : public IEventObject<Query> {
     public:
+        EventObjectQuery(const Query& query) : m_query(query) {
+        }
+
         static std::shared_ptr<IEventObject<Query>> make_object(const Query& o) {
-            auto impl = std::make_shared<EventObjectQuery>();
-            impl->m_query = o;
-            return impl;
+            return std::make_shared<EventObjectQuery>(o);
         }
 
-        virtual Query GetImpl() override {
-            return m_query;
-        }
+        virtual Query GetImpl() override { return m_query; }
+        virtual std::string GetData() override { return m_query->data; }
 
-        virtual std::string GetData() override {
-            return m_query->data;
-        }
-
-        virtual std::string GetAttachmentType() override {
-            return "";
-        }
-
-        virtual TgBot::User::Ptr GetOwner() override {
-            return m_query->from;
-        }
-
-        virtual TgBot::Chat::Ptr GetChat() override {
-            return nullptr;
-        }
+        virtual std::string GetAttachmentType() override { return ""; }
+        virtual TgBot::User::Ptr GetOwner() override { return m_query->from; }
+        virtual TgBot::Chat::Ptr GetChat() override { return nullptr; }
 
     private:
         Query m_query;
