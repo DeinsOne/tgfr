@@ -17,8 +17,11 @@ namespace Events {
         }
 
         virtual void Handle(const std::shared_ptr<TgBot::Bot>& bot) override {
-            throw std::runtime_error("EventAnyMessage: Some error");
-            bot->getApi().sendMessage(m_eventobject->GetImpl()->from->id, m_eventobject->GetData());
+            auto kb = createInlineKeyboard({
+                { { "Press me!", "_button_callback" } }
+            });
+
+            bot->getApi().sendMessage(m_eventobject->GetImpl()->from->id, formatItalic(m_eventobject->GetData(), "html"), true, 0, kb, "HTML");
         }
 
     };
