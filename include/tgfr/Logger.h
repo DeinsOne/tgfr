@@ -6,6 +6,9 @@
 
 namespace tgfr {
 
+    /**
+     * @brief Utility class. Is used by tgfe by default to make log
+     */
     class Logger {
     public:
         static void Init();

@@ -10,11 +10,20 @@
 
 namespace tgfr {
 
+    /**
+     * @brief EventHandler instantiates events and fills EventManager
+     * @note Must be instantiated with make_handler function
+     */
     class EventHandler {
     public:
         EventHandler(const std::shared_ptr<EventManager>& eventmanager) : m_eventmanager(eventmanager) {
         }
 
+        /**
+         * @brief Creates handler object
+         * @param eventmanager Manager instance. Required for constructor
+         * @return std::shared_ptr<EventHandler> 
+         */
         static std::shared_ptr<EventHandler> make_handler(const std::shared_ptr<EventManager>& eventmanager) {
             auto handler = std::make_shared<EventHandler>(eventmanager);
             handler->_impl = handler;
@@ -22,6 +31,11 @@ namespace tgfr {
         }
 
     public:
+        /**
+         * @brief Add event type for handling
+         * @tparam TEvent Any event inherited from IEvent's childs
+         * @return std::shared_ptr<EventHandler> This handler
+         */
         template<typename TEvent>
         std::shared_ptr<EventHandler> addEvent() {
             auto event = new TEvent;
@@ -37,8 +51,18 @@ namespace tgfr {
         }
 
     public:
+        /**
+         * @brief Checks if message object is compatibles with any registered message event
+         * @note Applyes for one or multiple message event
+         * @param object Message event object
+         */
         void _processMessage(const std::shared_ptr<IEventObject<Message>>& object);
 
+        /**
+         * @brief Checks if message object is compatibles with any registered query event
+         * @note Applyes for one or multiple quey event
+         * @param object Query event object
+         */
         void _processQuery(const std::shared_ptr<IEventObject<Query>>& object);
 
     private:

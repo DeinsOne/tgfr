@@ -10,6 +10,10 @@
 
 namespace tgfr {
 
+    /**
+     * @brief Bot instance
+     * @details Must be instantiated with make_shared function
+     */
     class Bot {
     public:
         Bot(const std::string& token,
@@ -17,6 +21,14 @@ namespace tgfr {
             const std::shared_ptr<EventHandler>& eventhandler
         );
 
+        /**
+         * @brief Function to create bot
+         * 
+         * @param eventmanage EventManager instance
+         * @param eventhandler EventHandler instace
+         * @param token Telegram bot token
+         * @return std::shared_ptr<Bot> Pointer to created bot
+         */
         static std::shared_ptr<Bot> make_bot(
             const std::shared_ptr<EventManager>& eventmanage,
             const std::shared_ptr<EventHandler>& eventhandler,
@@ -25,6 +37,11 @@ namespace tgfr {
             return std::make_shared<Bot>(token, eventmanage, eventhandler);
         }
 
+        /**
+         * @brief Start bot with specific executor
+         * 
+         * @tparam ThreadingType accepts childs of __IBotThreadingType(BotAsync or BotSync)
+         */
         template<typename ThreadingType>
         void start() {
             if (m_executor) {
@@ -35,6 +52,9 @@ namespace tgfr {
             m_executor->_start(m_bot);
         }
 
+        /**
+         * @brief Stops bot execution
+         */
         void stop() { m_executor->_stop(); }
 
     protected:
