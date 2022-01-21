@@ -70,25 +70,42 @@ See more samples on [samples](./samples)
 
 Tgfr uses cmake build system. Cmake project is located in root directory of the project
 
-```
-    mkdir build
-    cd build
-    cmake -DCMAKE_BUILD_TYPE=Release ..
-    make
+```bash
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
 ```
 
 ### Build options
 ```
-    -DBUILD_SHARED_LIBS     # Build shared library instead dynamic
-    -DBUILD_SAMPLES         # Build samples
+-DBUILD_SHARED_LIBS     # Build shared library instead dynamic
+-DBUILD_SAMPLES         # Build samples
+```
+
+### Use in projects ###
+
+To use tgfr as library use the instruction:
+
+```bash
+cd <project-path>
+git submodule add https://github.com/DeinsOne/tgfr.git third-party/tgfr
+```
+
+Before the target add the module subdirectory in your CMakeLists.txt
+
+```cmake
+add_subdirectory(third-party/tgfr)
+add_executable(your-executable ...)
+target_link_libraries(your-executable tgfr)
 ```
 
 ## Dependencies ##
 
 Tgfr requires a compiler with C++11 support. The library is built over [tgbot-cpp](https://github.com/reo7sp/tgbot-cpp) library. Deps will be automatically installed with inbuilt script.
 
-```
-    ./utilities/install-deps.sh
+```bash
+./utilities/install-deps.sh
 ```
 
 ## Documentation ##
