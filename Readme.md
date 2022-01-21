@@ -79,8 +79,8 @@ make
 
 ### Build options
 ```
--DBUILD_SHARED_LIBS     # Build shared library instead dynamic
--DBUILD_SAMPLES         # Build samples
+-DTGFR_BUILD_SHARED_LIBS     # Build shared library instead dynamic
+-DTGFR_BUILD_SAMPLES         # Build samples
 ```
 
 ### Use in projects ###

@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 project(tgfr)
 
 # options
-option(tgfr_BUILD_SHARED_LIBS "Build tgfr shared/static library." OFF)
-option(tgfr_BUILD_SAMPLES "Build tgfr example projects." OFF)
+option(TGFR_BUILD_SHARED_LIBS "Build tgfr shared/static library." OFF)
+option(TGFR_BUILD_SAMPLES "Build tgfr example projects." OFF)
 
 # sources
 set(CMAKE_CXX_STANDARD 14)
@@ -79,7 +79,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY SOVERSION 1)
 
 
 # samples
-if (tgfr_BUILD_SAMPLES)
+if (TGFR_BUILD_SAMPLES)
     message(STATUS "Building sample projects is enabled")
     set(TGFR_LIB ${PROJECT_NAME})
     add_subdirectory(samples/echo_bot)
