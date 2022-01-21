@@ -9,22 +9,42 @@
 
 namespace tgfr {
 
+    /**
+     * @brief Interface for making events
+     * @tparam TEventObject Type of object event will handle
+     */
     template<typename TEventObject>
     class IEvent : public IEventExecutable {
     public:
         IEvent() = default;
         IEvent(const std::shared_ptr<TEventObject>& eventobject);
 
+        /**
+         * @brief Get the Event Object object
+         * @return std::shared_ptr<TEventObject> Event object
+         */
         virtual std::shared_ptr<TEventObject> GetEventObject() = 0;
 
+        /**
+         * @brief Function to instantiate class
+         * @param eventobject Event object
+         * @return std::shared_ptr<IEvent<TEventObject>> New event
+         */
         virtual std::shared_ptr<IEvent<TEventObject>> make_copy(const std::shared_ptr<TEventObject>& eventobject) = 0;
 
     public:
-        // Check whater event compatible with given event object
+        /**
+         * @brief Check whater given event object is compatible with event
+         * @param eventobject Event object to be checked
+         * @return true or false 
+         */
         virtual bool Check(const std::shared_ptr<TEventObject>& eventobject) = 0;
     };
 
 
+    /**
+     * @brief Event of Message object
+     */
     class EventMessage : public IEvent<IEventObject<Message>> {
     public:
         EventMessage() = default;
@@ -46,6 +66,9 @@ namespace tgfr {
     };
 
 
+    /**
+     * @brief Event of Query object
+     */
     class EventQuery : public IEvent<IEventObject<Query>> {
     public:
         EventQuery() = default;
@@ -67,6 +90,9 @@ namespace tgfr {
     };
 
 
+    /**
+     * @brief Event of Error object
+     */
     class EventError : public IEvent<IEventObject<std::string>> {
     public:
 

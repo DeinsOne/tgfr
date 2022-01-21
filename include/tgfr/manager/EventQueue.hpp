@@ -8,8 +8,16 @@
 
 namespace tgfr {
 
+    /**
+     * @brief EventQueue is temporary storage for events
+     */
     class EventQueue {
     public:
+        /**
+         * @brief Get first event from queue and erase it
+         * 
+         * @return std::shared_ptr<IEventExecutable> Event pointer
+         */
         std::shared_ptr<IEventExecutable> popEvent() {
             if (!size()) return nullptr;
             std::lock_guard<std::mutex> _lock(m_events_lock);
@@ -18,11 +26,21 @@ namespace tgfr {
             return event;
         }
 
+        /**
+         * @brief Add event tu queue
+         * 
+         * @param event Any event inherited from IEventExecutable
+         */
         void addEvent(const std::shared_ptr<IEventExecutable>& event) {
             std::lock_guard<std::mutex> _lock(m_events_lock);
             m_events.push(event);
         }
 
+        /**
+         * @brief Get size of queue
+         * 
+         * @return std::size_t Queue size
+         */
         std::size_t size() {
             std::lock_guard<std::mutex> _lock(m_events_lock);
             return m_events.size();

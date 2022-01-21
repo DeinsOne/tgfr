@@ -12,27 +12,53 @@
 
 namespace tgfr {
 
+    /**
+     * @brief IEventObjcetBase is a base interface for IEventObject
+     */
     class IEventObjcetBase {
     public:
         /** 
+         * @brief Get object's data
          * @return String representation of object's text. Message returns text etc.
         */
         virtual std::string GetData() = 0;
 
+        /**
+         * @brief Get the Owner object
+         * @return TgBot::User::Ptr Owner
+         */
         virtual TgBot::User::Ptr GetOwner() = 0;
 
+        /**
+         * @brief Get the Chat object
+         * @return TgBot::Chat::Ptr Chat
+         */
         virtual TgBot::Chat::Ptr GetChat() = 0;
 
+        /**
+         * @brief Get the Attachment Type
+         * @return std::string Type
+         */
         virtual std::string GetAttachmentType() = 0;
     };
+
 
     /**
      * Wrapper for TgBot::MessagePtr & TgBot::InlineQuery::Ptr
      * T is wrapper type: std::shared_ptr<some type>
     */
+
+    /**
+     * @brief IEventObject is an interface to abstract native objects
+     * @tparam TShared Any type
+     */
     template<typename TShared>
     class IEventObject : public IEventObjcetBase {
     public:
+        /**
+         * @brief Get the Impl object
+         * @return TShared
+         */
         virtual TShared GetImpl() = 0;
 
     };
@@ -42,9 +68,16 @@ namespace tgfr {
 
 
 
-    // Message event object
+    /**
+     * @brief Event object to abstract message
+     */
     class EventObjectMessage : public IEventObject<Message> {
     public:
+        /**
+         * @brief Function to constract EventObjectMessage
+         * @param o Message objecy
+         * @return std::shared_ptr<IEventObject<Message>> New EventObjectMessage
+         */
         static std::shared_ptr<IEventObject<Message>> make_object(const Message& o) {
             auto impl = std::make_shared<EventObjectMessage>();
             impl->m_message = o;
@@ -81,12 +114,19 @@ namespace tgfr {
         std::string m_attachmenttype;
     };
 
-    // Query event object
+    /**
+     * @brief Event object to abstract callback query
+     */
     class EventObjectQuery : public IEventObject<Query> {
     public:
         EventObjectQuery(const Query& query) : m_query(query) {
         }
 
+        /**
+         * @brief Function to constract EventObjectQuery
+         * @param o Query objecy
+         * @return std::shared_ptr<IEventObject<Message>> New EventObjectQuery
+         */
         static std::shared_ptr<IEventObject<Query>> make_object(const Query& o) {
             return std::make_shared<EventObjectQuery>(o);
         }
@@ -102,12 +142,19 @@ namespace tgfr {
         Query m_query;
     };
 
-
+    /**
+     * @brief Event object to abstract error(exception)
+     */
     class EventObjectError : public IEventObject<std::string> {
     public:
         EventObjectError(const std::string& message) : m_msg(message) {
         }
 
+        /**
+         * @brief Function to constract EventObjectError
+         * @param o String objecy
+         * @return std::shared_ptr<IEventObject<Message>> New EventObjectError
+         */
         static std::shared_ptr<IEventObject<std::string>> make_object(const std::string& o) {
             return std::make_shared<EventObjectError>(o);
         }

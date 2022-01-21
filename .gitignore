@@ -4,6 +4,7 @@
 /.vscode
 /tmp
 /CMakeFiles
+/doc
 
 ## Files
 /CMakeCache.txt
