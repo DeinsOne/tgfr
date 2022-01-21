@@ -64,7 +64,7 @@ public:
 };
 ```
 
-See more samples on [samples](./samples)
+See more samples on [samples](https://github.com/DeinsOne/tgfr/blob/master/samples)
 
 ## Building ##
 
@@ -111,3 +111,6 @@ Tgfr requires a compiler with C++11 support. The library is built over [tgbot-cp
 ## Documentation ##
 
 Doxygen documentation can be built by running 'doxygen' from the project root directory. Generated documentation will be placed in 'doc/html'.
+
+## Licence ##
+[The MIT License](https://github.com/DeinsOne/tgfr/blob/master/LICENSE).
