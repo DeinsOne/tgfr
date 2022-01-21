@@ -14,67 +14,57 @@ The goal of this project is to build c++ interface for creating telegram bots se
 
 The following code snippets show how you might implement a simple bot.
 
-File main.cpp:
-
-Include the headers
+main.cpp
 
 ```cpp
-    #include <tgfr/tgfr.hpp>
-    #include "example/user/definitions/EventStart.hpp"
-```
+#include <tgfr/tgfr.hpp>
+#include "EventStart.hpp"
 
-Initialize helpers. Make manager with maximum 10 same time processing events and 1 minute max lifetime
+int main(int argc, char** argv) {
+    tgfr::Init();
 
-```cpp
-    auto eventmanager = EventManager::make_manager(10, std::chrono::minutes(1));
-    auto eventhandler = EventHandler::make_handler(eventmanager);
-```
+    // Make event manager with maximum 10 same time processing events and 1 minute max lifetime
+    auto eventmanager = tgfr::EventManager::make_manager(10, std::chrono::minutes(1));
 
-Add events to be handled
+    // Make event handler
+    auto eventhandler = tgfr::EventHandler::make_handler(eventmanager);
 
-```cpp
+    // Add events to be handled
     eventhandler->addEvent<Events::EventStart>();
+
+    // Make bot with specific token
+    auto bot = tgfr::Bot::make_bot(eventmanager, eventhandler, "!!! TOKEN !!!");
+
+    // Start bot with BotSync executor or BotAsync
+    bot->start<tgfr::BotSync>();
+
+    return 0;
+}
 ```
 
-Start bot with BotSync or BotAsync executor
+EventStart.hpp
 
 ```cpp
-    auto bot = Bot::make_bot(eventmanager, eventhandler, "!!! TOKEN !!!");
-    bot->start<BotSync>();
-```
+#include <tgfr/handler/Event.hpp>
 
-File EventStart.hpp:
+// Class inherited from EventMessage. You should override Check and Handle methods only
+class EventStart : public EventMessage {
+    EVENT_MESSAGE_CLASS(EventStart)
 
-Include headers
-
-```cpp
-    #include <tgfr/handler/Event.hpp>
-```
-
-Define class EventStart
-
-```cpp
-    class EventStart : public EventMessage {
-        EVENT_MESSAGE_CLASS(EventStart)
-
-    public:
-        virtual bool Check(const std::shared_ptr<IEventObject<Message>>& eventobject) override;
-
-        virtual void Handle(const std::shared_ptr<TgBot::Bot>& bot) override;
-    };
-```
-
-Define EventStart class functions
-
-```cpp
-    bool EventStart::Check(const std::shared_ptr<IEventObject<Message>>& eventobject) {
+public:
+    // Method to check the event can be handled. Check if message text is '/start'
+    virtual bool Check(const std::shared_ptr<IEventObject<Message>>& eventobject) override {
         return eventobject->GetData() == "/start";
     }
 
-    void Handle(const std::shared_ptr<TgBot::Bot>& bot) {
+    // Handle event. Send some message in response
+    virtual void Handle(const std::shared_ptr<TgBot::Bot>& bot) override {
         bot->getApi().sendMessage(m_eventobject->GetImpl()->from->id, "Hi! Nice to meat you");
     }
+};
 ```
+
+See more samples on [samples](./samples)
 
 ## Building ##
 
@@ -95,9 +85,12 @@ Tgfr uses cmake build system. Cmake project is located in root directory of the 
 
 ## Dependencies ##
 
-Tgfr is built over [tgbot-cpp](https://github.com/reo7sp/tgbot-cpp) library. Deps will be automatically installed with inbuilt script.
+Tgfr requires a compiler with C++11 support. The library is built over [tgbot-cpp](https://github.com/reo7sp/tgbot-cpp) library. Deps will be automatically installed with inbuilt script.
 
 ```
     ./utilities/install-deps.sh
 ```
 
+## Documentation ##
+
+Doxygen documentation can be built by running 'doxygen' from the project root directory. Generated documentation will be placed in 'doc/html'.
