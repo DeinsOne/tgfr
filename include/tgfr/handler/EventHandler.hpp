@@ -36,9 +36,9 @@ namespace tgfr {
          * @tparam TEvent Any event inherited from IEvent's childs
          * @return std::shared_ptr<EventHandler> This handler
          */
-        template<typename TEvent>
-        std::shared_ptr<EventHandler> addEvent() {
-            auto event = new TEvent;
+        template<typename TEvent, typename ...TArgs>
+        std::shared_ptr<EventHandler> addEvent(TArgs... args) {
+            auto event = new TEvent(args...);
 
             if (auto ptr = dynamic_cast<EventMessage*>(event))
                 m_events_message.emplace_back(std::shared_ptr<EventMessage>(ptr));
